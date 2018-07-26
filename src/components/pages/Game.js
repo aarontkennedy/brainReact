@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import cards from "../cards.json";
 import Card from "../Card";
+import WinLoseModal from "../WinLoseModal";
 
 class Game extends Component {
     state = {
         score: 0,
-        cards: cards
+        cards: cards,
+        gameOver: false,
+        didTheyWin: false
     };
 
     componentWillMount() {
@@ -20,11 +23,11 @@ class Game extends Component {
                 this.numCards = 9;
         }
         this.numColumns = Math.sqrt(this.numCards);
-        this.columnWidth = 12/this.numColumns;
+        this.columnWidth = 12 / this.numColumns;
 
         this.shuffleCards();
 
-        this.setState({cards: this.state.cards.slice(0, this.numCards)});
+        this.setState({ cards: this.state.cards.slice(0, this.numCards) });
 
         this.state.cards.forEach((c, index) => {
             c.id = index;
@@ -52,7 +55,7 @@ class Game extends Component {
             return array;
         }
 
-        this.setState({cards: shuffle(this.state.cards)});
+        this.setState({ cards: shuffle(this.state.cards) });
     }
 
     incrementScore = () => {
@@ -65,7 +68,7 @@ class Game extends Component {
         const indexClicked = c.getAttribute("data-id");
         c.className += " clicked"; // for debugging
 
-        this.state.cards.sort((a, b) => ( a.id - b.id ));
+        this.state.cards.sort((a, b) => (a.id - b.id));
         console.log(this.state.cards);
         console.log(event.target);
 
@@ -79,8 +82,8 @@ class Game extends Component {
         }
 
         // did they win?
-        if (this.numCards === 
-            this.state.cards.reduce((total, currentValue)=>(total+currentValue.clicked), 0)) {
+        if (this.numCards ===
+            this.state.cards.reduce((total, currentValue) => (total + currentValue.clicked), 0)) {
             this.handleWin();
         }
         else {
@@ -88,15 +91,27 @@ class Game extends Component {
         }
     };
 
-    handleWin() { alert("you win"); }
+    handleWin() {
+        alert("win");
+        this.setState({
+            gameOver: true,
+            didTheyWin: true
+        });
+    }
 
-    handleLoss() { alert("you loss"); }
+    handleLoss() {
+        alert("lose");
+        this.setState({
+            gameOver: true,
+            didTheyWin: false
+        });
+    }
 
     render() {
         return (
             <div className="row text-center">
                 {this.state.cards.map((c) => (
-                    <div key={c.id} className={"col-"+this.columnWidth}>
+                    <div key={c.id} className={"col-" + this.columnWidth}>
                         <Card
                             key={c.id}
                             id={c.id}
@@ -105,6 +120,7 @@ class Game extends Component {
                         />
                     </div>
                 ))}
+                {this.state.gameOver ? <WinLoseModal win={this.state.didTheyWin} /> : ""}
             </div>
         );
     }
