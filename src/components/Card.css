@@ -1,0 +1,15 @@
+img.Card {
+    max-width: 100%;
+    opacity: .75;
+    cursor: pointer;
+}
+
+img.Card:hover {
+    opacity: 1.0;
+    background-color: lightcyan;
+    border-radius: 10px;
+}
+
+img.clicked {
+    background-color: red;
+}

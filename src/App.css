@@ -1,0 +1,16 @@
+.App {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.App section {
+  flex: 1 0 auto;
+  background-color:white;
+  color: black;
+}
+
+.App footer {
+  flex-shrink: 0;
+  text-align:center;
+}
