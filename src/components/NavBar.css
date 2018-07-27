@@ -3,3 +3,7 @@
     cursor: default;
     font-weight: bolder;
 }
+
+#logo {
+    width: 1.5em;
+}

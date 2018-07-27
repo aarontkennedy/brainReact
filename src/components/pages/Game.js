@@ -32,6 +32,7 @@ class Game extends Component {
         }
         this.numColumns = Math.sqrt(this.numCards);
         this.columnWidth = 12 / this.numColumns;
+        this.maxHeight = Math.round(80/this.numColumns)+"vh";
 
         let shuffledCards = this.shuffleCards(cardObjects.slice(0));
 
@@ -138,6 +139,7 @@ class Game extends Component {
                             image={c.image}
                             handleClick={this.handleClick}
                             clicked={c.clicked}
+                            maxHeight={this.maxHeight}
                         />
                     </div>
                 ))}

@@ -6,4 +6,5 @@
     background-color: lightcyan;
     border-radius: 10px 10px 0 0;
     text-align:center;
+    z-index: 700;
 }
