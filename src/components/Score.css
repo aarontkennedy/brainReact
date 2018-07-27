@@ -1,0 +1,9 @@
+.Score {
+    position: fixed;
+    width: 80%;
+    left: 10%;
+    bottom: 0;
+    background-color: lightcyan;
+    border-radius: 10px 10px 0 0;
+    text-align:center;
+}

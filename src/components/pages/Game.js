@@ -1,17 +1,25 @@
 import React, { Component } from "react";
-import cards from "../cards.json";
+import cardObjects from "../cards.json";
 import Card from "../Card";
+import Score from "../Score";
 import WinLoseModal from "../WinLoseModal";
 
 class Game extends Component {
     state = {
         score: 0,
-        cards: cards,
+        highScore: 0,
+        cards: [],
         gameOver: false,
         didTheyWin: false
     };
 
-    componentWillMount() {
+    reset() {
+        this.setState({
+            score: 0,
+            gameOver: false,
+            didTheyWin: false
+        });
+
         switch (this.props.difficulty) {
             case "medium":
                 this.numCards = 16;
@@ -25,74 +33,85 @@ class Game extends Component {
         this.numColumns = Math.sqrt(this.numCards);
         this.columnWidth = 12 / this.numColumns;
 
-        this.shuffleCards();
+        let shuffledCards = this.shuffleCards(cardObjects.slice(0));
 
-        this.setState({ cards: this.state.cards.slice(0, this.numCards) });
-
-        this.state.cards.forEach((c, index) => {
+        shuffledCards.forEach((c, index) => {
             c.id = index;
             c.clicked = false;
         });
+
+        this.setState({ cards: shuffledCards.slice(0, this.numCards) });
     }
 
-    shuffleCards() {
-        function shuffle(array) {
-            var currentIndex = array.length, temporaryValue, randomIndex;
+    componentWillReceiveProps(nextProps) {
+        this.reset();
+    }
 
-            // While there remain elements to shuffle...
-            while (0 !== currentIndex) {
+    componentWillMount() {
+        this.reset();
+    }
 
-                // Pick a remaining element...
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex -= 1;
+    shuffleCards(array) {
+        var currentIndex = array.length, temporaryValue, randomIndex;
 
-                // And swap it with the current element.
-                temporaryValue = array[currentIndex];
-                array[currentIndex] = array[randomIndex];
-                array[randomIndex] = temporaryValue;
-            }
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
 
-            return array;
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
         }
 
-        this.setState({ cards: shuffle(this.state.cards) });
+        return array;
     }
 
     incrementScore = () => {
-        //alert(this.state.score + 1);
-        this.setState({ score: this.state.score + 1 });
+        const newScore = this.state.score + 1;
+        if (!this.state.gameOver) {
+            this.setState({ score: newScore });
+            if (newScore >= this.state.highScore) {
+                this.setState({ highScore: newScore });
+            }
+        }
     }
 
     handleClick = event => {
-        const c = event.target;
-        const indexClicked = c.getAttribute("data-id");
-        c.className += " clicked"; // for debugging
+        if (!this.state.gameOver) {
+            const c = event.target;
+            const indexClicked = c.getAttribute("data-id");
 
-        this.state.cards.sort((a, b) => (a.id - b.id));
-        console.log(this.state.cards);
-        console.log(event.target);
+            this.state.cards.sort((a, b) => (a.id - b.id));
+            //console.log(this.state.cards);
+            //console.log(event.target);
 
-        if (this.state.cards[indexClicked].clicked) {
-            this.handleLoss();
-        }
-        else {
-            // eslint-disable-next-line
-            this.state.cards[indexClicked].clicked = true;
-            this.incrementScore();
-        }
+            if (this.state.cards[indexClicked].clicked) {
+                this.handleLoss();
+            }
+            else {
+                // eslint-disable-next-line
+                this.state.cards[indexClicked].clicked = true;
+                this.incrementScore();
+            }
 
-        // did they win?
-        if (this.numCards ===
-            this.state.cards.reduce((total, currentValue) => (total + currentValue.clicked), 0)) {
-            this.handleWin();
-        }
-        else {
-            this.shuffleCards();
+            // did they win?
+            if (this.numCards ===
+                this.state.cards.reduce((total, currentValue) => (total + currentValue.clicked), 0)) {
+                this.handleWin();
+            }
+            else {
+                this.setState({
+                    cards: this.shuffleCards(this.state.cards)
+                });
+            }
         }
     };
 
     handleWin() {
-        alert("win");
         this.setState({
             gameOver: true,
             didTheyWin: true
@@ -100,7 +119,6 @@ class Game extends Component {
     }
 
     handleLoss() {
-        alert("lose");
         this.setState({
             gameOver: true,
             didTheyWin: false
@@ -110,6 +128,8 @@ class Game extends Component {
     render() {
         return (
             <div className="row text-center">
+                <Score score={this.state.score}
+                    highScore={this.state.highScore} />
                 {this.state.cards.map((c) => (
                     <div key={c.id} className={"col-" + this.columnWidth}>
                         <Card
@@ -117,6 +137,7 @@ class Game extends Component {
                             id={c.id}
                             image={c.image}
                             handleClick={this.handleClick}
+                            clicked={c.clicked}
                         />
                     </div>
                 ))}
