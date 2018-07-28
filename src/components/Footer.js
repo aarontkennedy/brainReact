@@ -7,7 +7,7 @@ const Footer = () => (
                 <a href="https://aarontkennedy.github.io"> Aaron Kennedy</a>
             </li>
             <li>
-                <a href="https://github.com/aarontkennedy/usaStateParks">
+                <a href="https://github.com/aarontkennedy/brainReact">
                     See Project on Github 
                     <i className="fab fa-github"></i>
                 </a>

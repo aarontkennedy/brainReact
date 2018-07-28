@@ -3,3 +3,7 @@
     width: 1em;
     vertical-align: -5px;
 }
+
+iframe {
+    max-width: 100%;
+}
