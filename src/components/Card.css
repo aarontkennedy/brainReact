@@ -4,12 +4,16 @@ img.Card {
     cursor: pointer;
 }
 
-img.Card:hover {
-    opacity: 1.0;
-    background-color: lightcyan;
-    border-radius: 10px;
-}
-
 img.clicked {
     background-color: red;
+}
+
+/* Primary input mechanism system can 
+   hover over elements with ease */
+@media (hover: hover) { 
+    img.Card:hover {
+    opacity: 1.0;
+    background-color: lightcyan;
+    border-radius: 10px;    
+    } 
 }

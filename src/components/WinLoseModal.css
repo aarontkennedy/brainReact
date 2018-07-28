@@ -25,6 +25,15 @@
     border: thin solid black;
 }
 
+@media all and (max-width: 320px){
+    .WinLoseModal h1 {
+        font-size: 300%;
+    }
+    .WinLoseModal h2 {
+        font-size: 150%;
+    }
+}
+
 .WinLoseModal a {
     display: inline-block;
     margin: .5em .1em;
