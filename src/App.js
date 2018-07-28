@@ -14,7 +14,7 @@ const App = () => (
       </header>
 
       <section className="container-fluid">
-        <Route exact path="/" component={Home} />
+        <Route exact path="/"  component={Home} />
         <Route exact path="/game/easy" render={(props) => <Game {...props} difficulty="easy" />} />
         <Route exact path="/game/medium" render={(props) => <Game {...props} difficulty="medium" />} />
         <Route exact path="/game/hard" render={(props) => <Game {...props} difficulty="hard" />} />
