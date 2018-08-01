@@ -32,7 +32,7 @@ class Game extends Component {
         }
         this.numColumns = Math.sqrt(this.numCards);
         this.columnWidth = 12 / this.numColumns;
-        this.maxHeight = Math.round(80/this.numColumns)+"vh";
+        this.maxHeight = Math.round(80 / this.numColumns) + "vh";
 
         let shuffledCards = this.shuffleCards(cardObjects.slice(0));
 
@@ -42,6 +42,12 @@ class Game extends Component {
         });
 
         this.setState({ cards: shuffledCards.slice(0, this.numCards) });
+
+        // http://clubmate.fi/remove-a-class-name-from-multiple-elements-with-pure-javascript/
+        const imagesWrong = document.getElementsByClassName("wrong");
+        while (imagesWrong[0]) {
+            imagesWrong[0].classList.remove("wrong")
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -91,23 +97,24 @@ class Game extends Component {
             //console.log(event.target);
 
             if (this.state.cards[indexClicked].clicked) {
-                this.handleLoss();
+                c.classList.add("wrong");
+                setTimeout(() => (this.handleLoss()), 500); // long enough to enjoy the shake shake
             }
             else {
                 // eslint-disable-next-line
                 this.state.cards[indexClicked].clicked = true;
                 this.incrementScore();
-            }
 
-            // did they win?
-            if (this.numCards ===
-                this.state.cards.reduce((total, currentValue) => (total + currentValue.clicked), 0)) {
-                this.handleWin();
-            }
-            else {
-                this.setState({
-                    cards: this.shuffleCards(this.state.cards)
-                });
+                // did they win?
+                if (this.numCards ===
+                    this.state.cards.reduce((total, currentValue) => (total + currentValue.clicked), 0)) {
+                    this.handleWin();
+                }
+                else {
+                    this.setState({
+                        cards: this.shuffleCards(this.state.cards)
+                    });
+                }
             }
         }
     };
