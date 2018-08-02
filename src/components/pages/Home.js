@@ -27,7 +27,7 @@ const Home = () => (
 
             </div>
             <div className="col-12 col-md-6">
-                <iframe title="Game Demo" width="560" height="315" src="https://www.youtube.com/embed/R3Ha7oqU64Q?rel=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <iframe title="Game Demo" width="560" height="315" src="https://www.youtube.com/embed/R3Ha7oqU64Q?rel=0" frameBorder="0" allow="autoplay; encrypted-media" allowFullScreen></iframe>
             </div>
         </div>
     </div>
